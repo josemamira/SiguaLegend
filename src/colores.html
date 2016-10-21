@@ -59,9 +59,17 @@ $("#test1").append(test1);
 // Test 2
 test2 = chroma.brewer.OrRd;		
 $("#test2").append(test2);
-		
 
-// Test 3 y 4	
+	
+// Test 3	
+paletaSpectral= chroma.scale('Spectral').colors(10);			//alert(kk2);			//alert(kk2.length);
+var test3="";
+for (i = 0; i < paletaSpectral.length; i++) {
+	test3 += '<span class="cm-string cm-color cm-small" data-color="#'+paletaSpectral[i]+'" style="background-color:'+paletaSpectral[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+}
+document.getElementById('test3').innerHTML = test3; 	
+
+// Test 4	
 paletaSet2= chroma.scale('Set2').colors(10);			//alert(kk2);			//alert(kk2.length);
 var text="";
 for (i = 0; i < paletaSet2.length; i++) {
