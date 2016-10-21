@@ -25,10 +25,10 @@
     
 </head>
 <body>
-<p>Test1</p>	
+<p>Test1: Array </p>	
 <div id="test1"></div>	
 
-<p>Test2</p>	
+<p>Test2: colores paleta chroma.brewer.OrRd</p>	
 <div id="test2"></div>		
 
 <p>Test3</p>	
@@ -52,124 +52,114 @@
 <div id="paleta"></div>
 
 <script type="text/javascript">
-		
+// Test 1		
 test1 = chroma.scale(['white','green','blue']).colors(5);		
 $("#test1").append(test1);
 		
-
+// Test 2
 test2 = chroma.brewer.OrRd;		
 $("#test2").append(test2);
 		
 
 // Test 3 y 4
-		paleta1= chroma.scale('Set2').colors(10);			//alert(kk2);			//alert(kk2.length);
-		var text="";
-		var text2="";
-		for (i = 0; i < paleta1.length; i++) {
-			test3 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta1[i]+'" style="background-color:'+paleta1[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
-			test4 += '<option>'+text+'</option>'
-		}
+paleta1= chroma.scale('Set2').colors(10);			//alert(kk2);			//alert(kk2.length);
+var test3="";
+var test4="";
+for (i = 0; i < paleta1.length; i++) {
+	test3 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta1[i]+'" style="background-color:'+paleta1[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+	test4 += '<option>'+test3+'</option>'
+}
 
-		document.getElementById('paleta').innerHTML = test3; 
-		$("#paleta2").append(test4);	
+document.getElementById('paleta').innerHTML = test3; 
+$("#paleta2").append(test4);	
 		
 
 // Test 5
-		var test5="";
-		var lasPaletas = ['Accent','Dark2','Paired','Pastel1','Pastel2','Set1','Set2'];
-		for (j = 0; j < lasPaletas.length; j++) {
-			paleta = chroma.scale(lasPaletas[j]).colors(12);
-			for (i = 0; i < paleta.length; i++) {
-				test5 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
-			}
-			test5 += ' '+ lasPaletas[j]+ '<br>';
-		}		
-		document.getElementById('paleta').innerHTML = test5; 
+var test5="";
+var lasPaletas = ['Accent','Dark2','Paired','Pastel1','Pastel2','Set1','Set2'];
+for (j = 0; j < lasPaletas.length; j++) {
+	paleta = chroma.scale(lasPaletas[j]).colors(12);
+	for (i = 0; i < paleta.length; i++) {
+		test5 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+	}
+	test5 += ' '+ lasPaletas[j]+ '<br>';
+}		
+document.getElementById('paleta').innerHTML = test5; 
 		
 		
 		
 // Test 6		
-		var test6="";
+var test6="";
 		
-		var Accent = chroma.brewer.Accent;
-		var Dark2 = chroma.brewer.Dark2;
-		var Paired = chroma.brewer.Paired;
-		var Pastel1 = chroma.brewer.Pastel1;
-		var Pastel2 = chroma.brewer.Pastel2;
-		var Set1 = chroma.brewer.Set1;
-		var Set2 = chroma.brewer.Set2;
+var Accent = chroma.brewer.Accent;
+var Dark2 = chroma.brewer.Dark2;
+var Paired = chroma.brewer.Paired;
+var Pastel1 = chroma.brewer.Pastel1;
+var Pastel2 = chroma.brewer.Pastel2;
+var Set1 = chroma.brewer.Set1;
+var Set2 = chroma.brewer.Set2;
 				
-		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
-		alert(String(lasPaletas[1]));
-		for (j = 0; j < lasPaletas.length; j++) {
-			//paleta = chroma.scale(lasPaletas[j]).colors(12);
-			//var unaPaleta = eval('(' + lasPaletas[j] + ')') ;
-			var paleta = lasPaletas[j];
-			for (i = 0; i < paleta.length; i++) {
-				test6 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
-			}
-			test6 += ' '+ lasPaletas[j]+ '<br>';
-		}		
-		document.getElementById('paleta').innerHTML = test6; 		
+var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+//alert(String(lasPaletas[1]));
+for (j = 0; j < lasPaletas.length; j++) {
+	var paleta = lasPaletas[j];
+	for (i = 0; i < paleta.length; i++) {
+		test6 += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+	}
+	test6 += ' '+ lasPaletas[j]+ '<br>';
+}		
+document.getElementById('paleta').innerHTML = test6; 		
 		
 		
 // Test 7
-		var test7="";
+var test7="";
 		
-		var Accent = {name:'Accent',colores: chroma.brewer.Accent};
-		var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
-		var Paired = {name:'Paired',colores: chroma.brewer.Paired};
-		var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
-		var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
-		var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
-		var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
+var Accent = {name:'Accent',colores: chroma.brewer.Accent};
+var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
+var Paired = {name:'Paired',colores: chroma.brewer.Paired};
+var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
+var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
+var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
+var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
 				
-		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
 		
-		for (j = 0; j < lasPaletas.length; j++) {
-			var unaPaleta = lasPaletas[j].colores;
-			for (i = 0; i < unaPaleta.length; i++) {
-				test7 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
-			}
-			test7 += ' '+ lasPaletas[j].name+ '<br>';
-		}		
-		document.getElementById('paleta').innerHTML = test7; 	
+for (j = 0; j < lasPaletas.length; j++) {
+	var unaPaleta = lasPaletas[j].colores;
+	for (i = 0; i < unaPaleta.length; i++) {
+		test7 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+	}
+	test7 += ' '+ lasPaletas[j].name+ '<br>';
+}		
+document.getElementById('paleta').innerHTML = test7; 	
 
 // Test 8
-		var test8="";
-		// sólo obtiene las paletas que tienen más número de colores que el que se indica en num
-		var num = "9";
-		var Accent = {name:'Accent',colores: chroma.brewer.Accent};
-		var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
-		var Paired = {name:'Paired',colores: chroma.brewer.Paired};
-		var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
-		var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
-		var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
-		var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
+var test8="";
+// sólo obtiene las paletas que tienen más número de colores que el que se indica en num
+var num = "9";
+var Accent = {name:'Accent',colores: chroma.brewer.Accent};
+var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
+var Paired = {name:'Paired',colores: chroma.brewer.Paired};
+var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
+var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
+var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
+var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
 				
-		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
 		
-		for (j = 0; j < lasPaletas.length; j++) {
-			//alert (lasPaletas[j].colores.length);
-			if ( lasPaletas[j].colores.length >= num ) {
-				//alert ("entra " + lasPaletas[j].name);
-				var unaPaleta = lasPaletas[j].colores.slice(0,num);
-				for (i = 0; i < unaPaleta.length; i++) {
-					test8 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
-				}
-				test8 += ' '+ lasPaletas[j].name+ '<br>';
-				
-			}
-
-		}		
-		document.getElementById('paleta').innerHTML = test8; 	
+for (j = 0; j < lasPaletas.length; j++) {
+	if ( lasPaletas[j].colores.length >= num ) {
+		var unaPaleta = lasPaletas[j].colores.slice(0,num);
+		for (i = 0; i < unaPaleta.length; i++) {
+			test8 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+		}
+		test8 += ' '+ lasPaletas[j].name+ '<br>';				
+	}
+}		
+document.getElementById('paleta').innerHTML = test8; 	
 
 	
-		
-		
-		
-
-    </script>
+</script>
 
 </body>
 </html>
