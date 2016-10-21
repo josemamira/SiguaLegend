@@ -45,7 +45,6 @@
   <li>Utiliza paletas de colores adecuadas para leyendas temáticas con datos cualitativos. Basado en los trabajos de la Dra. Cynthia <a href="http://colorbrewer2.org">Brewer</a></li>  
   <li><a href="http://www.orchids.de/kthilf/javascripts.html">Geo2UTM</a>: Transforma una coordenada en Latitud y longitud con datum WGS84 en UTM del mismo datum. Se utiliza para definir el BBOX en un requerimiento WMS GETMAP</li>
   <li>Los ficheros generados se almacenan como Gist en tu repositorio de Github, por lo que siempre los puedes reutilizar. Son Gist de usuario, no públicos, por lo que es necesario autentificarse con usuario y contraseña.</li> 
-  <li>Conversión de coordenadas de geográficas a UTM</li>   
   <li>Permite discriminar (no visualizar) algunas categorías (actividades o departamentos)</li>
   <li>En función del número de elementos cualitativos se despliegan las sólo las paletas más adecuadas</li>
    <li>También se puede personalizar el color de la línea de los polígonos</li>
@@ -75,9 +74,17 @@
 <p>Su funcionamiento no se aplica de forma global, sino a cada planta de un edificio, por tanto son necesario esos dos pasos, elegir edificio y luego la planta deseada. En función del número de departamentos se seleccionarán las paletas disponibles más adecuadas</p>
 <p>
   <input type="button" onclick="location.href='src/editor_dptos.html';" value="Acceso al editor de departamentos" />
-          
-          </p>
+</p>
 
+<h3>
+<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true">
+  <span aria-hidden="true" class="octicon octicon-link"></span></a>Test con chroma.js</h3>
+
+<p>Algunas utilidades de uso de esta librería</p>
+<p>
+  <input type="button" onclick="location.href='src/colores.html';" value="Test de Chroma.js" />
+</p>          
+          
         </section>
 
         <aside id="sidebar">
