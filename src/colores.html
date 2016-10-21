@@ -112,7 +112,7 @@ document.getElementById('test6').innerHTML = test6;
 		
 		
 // Test 7
-var test7="";
+var text7="";
 		
 var Accent = {name:'Accent',colores: chroma.brewer.Accent};
 var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
@@ -127,12 +127,17 @@ var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
 for (j = 0; j < lasPaletas.length; j++) {
 	var unaPaleta = lasPaletas[j].colores;
 	for (i = 0; i < unaPaleta.length; i++) {
-		test7 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+		text7 += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
 	}
-	test7 += ' '+ lasPaletas[j].name+ '<br>';
+	text7 += ' '+ lasPaletas[j].name+ '<br>';
 }		
-document.getElementById('test7').innerHTML = test7; 	
+document.getElementById('test7').innerHTML = text7; 	
 
+	
+
+	
+	
+	
 // Test 8
 var test8="";
 // sólo obtiene las paletas que tienen más número de colores que el que se indica en num
