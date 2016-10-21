@@ -33,8 +33,8 @@
   <span aria-hidden="true" class="octicon octicon-link"></span></a>Editor SLD.</h3>
 
 <p>El protocolo WMS permite el uso de leyendas creadas en el estándar Styled Layer Definition (SLD), que en definitiva es un XML con TAGs específicos, que son utilizadas desde la 
-  <i>request</i> GETMAP vía POST o GET. Este estilo siempre está asociado a una LAYER y puede estar referido de dos formas: la primera, y menos adecuada, es adjuntando todo el contenido 
-  del SLD utilizando la variable SLD_BODY, pero hay que tener en cuenta que estos contenidos a veces superan el ancho máximo permitido en la URL, o bien tenemos problemas de codificación de caracteres (acentos, etc). La opción más recomendable es ubicar el fichero SLD en un servidor y llamar a su URL desde el parámedo SLD.
+  <i>request</i> GETMAP vía POST o GET de un servicio WMS. Este estilo siempre está asociado a una LAYER y puede estar referido de dos formas: la primera, y menos adecuada, es adjuntando todo el contenido 
+  del SLD utilizando la variable SLD_BODY, pero hay que tener en cuenta que estos contenidos a veces superan el ancho máximo permitido en la URL, o bien tenemos problemas de codificación de caracteres (acentos, etc). La opción más recomendable es ubicar el fichero SLD en un servidor y llamar a su URL desde el parámetro SLD.
 </p>
 <p>Lo interesante de esta aplicación que te estamos mostrando es que el editor de leyenda genera en tiempo real el fichero SLD y 
   lo aloja como un GIST en tu repositorio de Github.</p>
