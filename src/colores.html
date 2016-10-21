@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chroma.js</title>
+    <meta charset="utf-8">
+    <style>
+		.cm-string {
+			border-radius: 3px;
+			display: inline-block;
+			margin-bottom: 2px;
+			margin-left: 2px;
+			min-height: 13px;
+			min-width: 9px;
+			padding: 2px 4px;
+			position: relative;
+			top: 2px;
+			vertical-align: bottom;
+		}
+		.cm-small {
+			height: 13px;
+		}
+    </style>
+    <script type="text/javascript" src="https://raw.githubusercontent.com/gka/chroma.js/master/chroma.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    
+</head>
+<body>
+	
+	
+	
+
+<div id="paleta"></div>
+    <script type="text/javascript">
+		
+/*		kk = chroma.scale(['white','green','blue']).colors(5);		
+		alert(kk);
+		
+		chroma.brewer.OrRd
+		kk1 = chroma.brewer.OrRd;		
+		alert(kk1);
+*/		
+
+/*
+		kk2= chroma.scale('Set2').colors(10);			//alert(kk2);			//alert(kk2.length);
+		var text="";
+		var text2="";
+		for (i = 0; i < kk2.length; i++) {
+			text += '<span class="cm-string cm-color cm-small" data-color="#'+kk2[i]+'" style="background-color:'+kk2[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+			text2 += '<option>'+text+'</option>'
+		}
+
+		document.getElementById('paleta').innerHTML = text; 
+		//document.getElementById("paleta2").appendChild(text2);
+		$("#paleta2").append(text2);	
+*/		
+
+/*
+		var text="";
+		var lasPaletas = ['Accent','Dark2','Paired','Pastel1','Pastel2','Set1','Set2'];
+		for (j = 0; j < lasPaletas.length; j++) {
+			paleta = chroma.scale(lasPaletas[j]).colors(12);
+			for (i = 0; i < paleta.length; i++) {
+				text += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+			}
+			text += ' '+ lasPaletas[j]+ '<br>';
+		}		
+		document.getElementById('paleta').innerHTML = text; 
+*/		
+		
+		
+/*		
+		var text="";
+		
+		var Accent = chroma.brewer.Accent;
+		var Dark2 = chroma.brewer.Dark2;
+		var Paired = chroma.brewer.Paired;
+		var Pastel1 = chroma.brewer.Pastel1;
+		var Pastel2 = chroma.brewer.Pastel2;
+		var Set1 = chroma.brewer.Set1;
+		var Set2 = chroma.brewer.Set2;
+				
+		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+		alert(String(lasPaletas[1]));
+		for (j = 0; j < lasPaletas.length; j++) {
+			//paleta = chroma.scale(lasPaletas[j]).colors(12);
+			//var unaPaleta = eval('(' + lasPaletas[j] + ')') ;
+			var paleta = lasPaletas[j];
+			for (i = 0; i < paleta.length; i++) {
+				text += '<span class="cm-string cm-color cm-small" data-color="#'+paleta[i]+'" style="background-color:'+paleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+			}
+			text += ' '+ lasPaletas[j]+ '<br>';
+		}		
+		document.getElementById('paleta').innerHTML = text; 		
+		
+*/		
+/*	
+		var text="";
+		
+		var Accent = {name:'Accent',colores: chroma.brewer.Accent};
+		var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
+		var Paired = {name:'Paired',colores: chroma.brewer.Paired};
+		var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
+		var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
+		var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
+		var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
+				
+		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+		
+		for (j = 0; j < lasPaletas.length; j++) {
+			var unaPaleta = lasPaletas[j].colores;
+			for (i = 0; i < unaPaleta.length; i++) {
+				text += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+			}
+			text += ' '+ lasPaletas[j].name+ '<br>';
+		}		
+		document.getElementById('paleta').innerHTML = text; 	
+*/
+
+		var text="";
+		// sólo obtiene las paletas que tienen más número de colores que el que se indica en num
+		var num = "9";
+		var Accent = {name:'Accent',colores: chroma.brewer.Accent};
+		var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
+		var Paired = {name:'Paired',colores: chroma.brewer.Paired};
+		var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
+		var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
+		var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
+		var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
+				
+		var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+		
+		for (j = 0; j < lasPaletas.length; j++) {
+			//alert (lasPaletas[j].colores.length);
+			if ( lasPaletas[j].colores.length >= num ) {
+				//alert ("entra " + lasPaletas[j].name);
+				var unaPaleta = lasPaletas[j].colores.slice(0,num);
+				for (i = 0; i < unaPaleta.length; i++) {
+					text += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>'
+				}
+				text += ' '+ lasPaletas[j].name+ '<br>';
+				
+			}
+
+		}		
+		document.getElementById('paleta').innerHTML = text; 	
+
+	
+		
+		
+		
+
+    </script>
+
+</body>
+</html>
