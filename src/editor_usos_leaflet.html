@@ -283,12 +283,16 @@ function getLeafletMap(miSLD) {
 
 	// Defino un mapa
 	var miMapa = L.map('map').setView([38.385421, -0.514494], 19);
-	//alert(miSLD);
 
+    /*
+    http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&service=WMS&request=GetMap&crs=epsg:25830&sld_version=1.1.0&layer=PB_D_TEMA&format=image/png&STYLE=default
+    &bbox=717039,4251458,717132,4251546&width=600&height=600
+    &sld=https://gist.githubusercontent.com/josemamira/a08cf07bf749b7be851248bb28d0b893/raw/9af27818cc8c41824a55faa729e4311aa9832767/Gist_SLD_1485454546212.xml
+    */
     // Defino capa WMS
-    var url = 'http://www.sigua.ua.es/cgi-bin/siguawms2?sld='+miSLD+'&';
+    var miLayer = laPlantaSel+'_D_TEMA';
+    var url = 'http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&sld_version=1.1.0&layer='+miLayer+'&sld='+miSLD+'&'
     var capaWMS = L.tileLayer.wms( url, {
-		layers: 'Base,'+laPlantaSel+'_D_TEMA',
 		format: 'image/png',
 		transparent: true,
 		attribution: 'José Manuel Mira',
@@ -299,7 +303,8 @@ function getLeafletMap(miSLD) {
 	// Añadir capa al mapa
 	capaWMS.addTo(miMapa);	
 
-}		
+}
+		
 </script>
 
 </body>
