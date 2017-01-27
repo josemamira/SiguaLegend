@@ -29,7 +29,6 @@
 GitHub user: <input type="text" name="gUser" id="gUser" value="josemamira">
  <button type="button"  onclick="loadGists()">Cargar Gists SLD</button> <br>
 SLD (Gist): <select id="selGits"></select>
-<!--SLD (Gist): <input type="text" name="sldraw" value="https://gist.githubusercontent.com/josemamira/6c4f64c3372e861246eaf736cc4b0cf2/raw/ca969c26cd29b709530605da0533962bc7737969/sld_basico.xml" size="100" id="sldraw">-->
  <button type="button"  onclick="loadSLD()">Crear mapa con SLD</button> 
 
 <div id="map" ></div>
@@ -51,7 +50,6 @@ function loadGists() {
 				if (v.type == "application/xml") {	// solo queremos los xml
 					var o = new Option(k, v.raw_url);
 					$( "#selGits" ).append( o );
-					//$( "#listado" ).append( "<li>"+k + ' is ' + v.raw_url+"</li>" );
 				}
 			});
 		});		
@@ -74,23 +72,13 @@ function loadGists() {
 	// Añadir capa al mapa
 	capaTiles.addTo(map);
 	//capaWMS.addTo(miMapa);
-function loadSLD2() {
-	alert ($( "#selGits option:selected" ).val()  );
 	
-}	
 function loadSLD() {
-	//alert(' hola '+ document.getElementById('sldraw').value );
-	//map.removeLayer(capaTiles);
-	
-    
-    //var miSLD = document.getElementById('sldraw').value;
     var planta = $( "#selGits option:selected" ).text().substring(0, 2);
 	var miLayer = planta+'PB_D_TEMA';    
     var miSLD = $( "#selGits option:selected" ).val();
     var url = 'http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&sld_version=1.1.0&layer='+miLayer+'&sld='+miSLD+'&'
     var capaWMS = L.tileLayer.wms( url, {
-
-		//layers: 'Base',
 		format: 'image/png',
 		transparent: true,
 		attribution: 'profesor',
@@ -98,31 +86,11 @@ function loadSLD() {
 		maxZoom: 21
     });	
     
-    capaWMS.addTo(map);
-    //map.removeLayer(capaTiles);
-	
-	
+    capaWMS.addTo(map);	
 }
 
-
-
 </script>
-<p>Cambia de proveedor de mapa. </p>
-<ul>
-	<li>Servicios de tiles <a href="https://leaflet-extras.github.io/leaflet-providers/preview/">aquí</a></li>
-	<li>WMS: Ver <a href="IDEE">IDE de España</a></li>
-</ul>
-Ejemplo WMS:
-<pre>
-var miWms1 = L.tileLayer.wms('http://www.ign.es/wms-inspire/ign-base', {
-	layers: 'IGNBaseTodo',
-	format: 'image/png',
-	transparent: true,
-	attribution: 'IGN',
-	minZoom:1, 
-	maxZoom: 18
-});
-</pre>
+
 
 </body>
 </html>
