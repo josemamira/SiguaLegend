@@ -38,12 +38,12 @@ User:<input type="text" id="gitUser" placeholder="usuario" > Password:<input typ
 <p>Haga clic en la caja de color para cambiarlo, o bien seleccione una paleta predefinida</p>
 
 Planta donde se aplicará:
-  <input type="radio" name="laPlanta" id="laPlanta" value="PB" checked="checked"> Baja
-  <input type="radio" name="laPlanta" id="laPlanta" value="P1"> P1
-  <input type="radio" name="laPlanta" id="laPlanta" value="P2"> P2 
-  <input type="radio" name="laPlanta" id="laPlanta" value="P3"> P3   
-  <input type="radio" name="laPlanta" id="laPlanta" value="P4"> P4  
-  <input type="radio" name="laPlanta" id="laPlanta" value="PS"> Sótano 
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="PB" checked="checked"> Baja
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P1"> P1
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P2"> P2 
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P3"> P3   
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P4"> P4  
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="PS"> Sótano 
 
 <table>
 	<tr valign="top">
@@ -77,7 +77,7 @@ Planta donde se aplicará:
 				<option value="pal5">Oficial</option>
 			</select>
 			
-			<br>Fichero XML: <input type="text" readonly id="xmlFile" >
+			<br>Fichero XML: <input type="text" id="xmlFile" >
 			<button id="uploadPaletteButton" onclick="uploadPalette()">Subir paleta</button>
 
 		</td>
@@ -97,6 +97,14 @@ Planta donde se aplicará:
 <!-- JQuery -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> 
 <script>
+var laPlantaSel = document.querySelector('input[name="laPlanta"]:checked').value;  
+
+function checkPlanta(laPlanta) {
+	var d = new Date().getTime();
+	var elFichero = laPlanta+"_Gist_SLD_"+d+".xml"; 
+    document.getElementById("xmlFile").value=elFichero;
+    //alert(elFichero);
+}
 
 function reloadPage() { location.reload(); }
 	// Fecha
@@ -106,7 +114,7 @@ function reloadPage() { location.reload(); }
 
 $(function() {
   // Cuando se carga la página rellena el nombre del fichero
-  	var elFichero = "Gist_SLD_"+d+".xml";
+  	var elFichero = laPlantaSel+"_Gist_SLD_"+d+".xml";
 	document.getElementById('xmlFile').value= elFichero; 
 });
 
@@ -142,20 +150,24 @@ function uploadPalette() {
 	// Obtiene el token de autorización
 	var gitUser = document.getElementById('gitUser').value;
 	var gitPw = document.getElementById('gitPw').value;
+	
+	if (gitUser == '' || gitPw == '') { alert('No es especificado el usuario o la contraseña de GitHub');}
+	else {
 
-	$.ajax({ 
-		url: 'https://api.github.com/authorizations',
-		type: 'POST',
-		beforeSend: function(xhr) { 
-			xhr.setRequestHeader("Authorization", "Basic " + btoa(gitUser+":"+gitPw) ); 
-		},
-		data: '{"scopes":["gist"],"note":"Obtener auth con id '+d+'"}'
-	}).done(function(response) {
-		//console.log(response.token);
-		var miToken = response.token;
-		uploadPaletteGit(miToken)
-		
-	});	
+		$.ajax({ 
+			url: 'https://api.github.com/authorizations',
+			type: 'POST',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader("Authorization", "Basic " + btoa(gitUser+":"+gitPw) ); 
+			},
+			data: '{"scopes":["gist"],"note":"Obtener auth con id '+d+'"}'
+		}).done(function(response) {
+			//console.log(response.token);
+			var miToken = response.token;
+			uploadPaletteGit(miToken)
+			
+		});	
+	}
 	
 }
 
@@ -260,12 +272,10 @@ function uploadPaletteGit(miToken) {
 		beforeSend: function(xhr) { 
 			xhr.setRequestHeader("Authorization", "token "+miToken); 
 		},
-		data: '{"description": "SLD creado desde interfaz web","public": true,"files": {"'+	document.getElementById('xmlFile').value+'": {"content": "'+ miXml +'"}}}'
+		data: '{"description": "SLD creado desde interfaz web","public": true,"files": {"'+ document.getElementById('xmlFile').value+'": {"content": "'+ miXml +'"}}}'
 	}).done(function(response) {
 		//console.log(response);
 		elFichero = document.getElementById('xmlFile').value;
-		//elFichero = "Gist_SLD_"+laPlantaSel+"_"+d+".xml";
-		//document.getElementById('xmlFile').value= elFichero; 		
 		miSLD =  response.files[elFichero].raw_url;
 		document.getElementById("gitInfo").innerHTML = "Subido satisfactoriamente a Github en <a href='" + response.html_url + "'>este enlace</a><br>"+
 			"Ver resultado en versión estática <a href='http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&service=WMS&request=GetMap&crs=epsg:25830&sld_version=1.1.0&layer="+laPlantaSel+"_D_TEMA&format=image/png&STYLE=default&bbox=717039,4251458,717132,4251546&width=600&height=600&sld=" + miSLD + "'> aquí </a>";
