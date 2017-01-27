@@ -293,6 +293,21 @@ function getLeafletMap(miSLD) {
 
 	// Defino un mapa
 	var miMapa = L.map('map').setView([38.385421, -0.514494], 19);
+	
+	// Defino capa de tiles SIGUA base
+	var siguaAttrib='Datos mapa &copy; <a href="http://www.sigua.ua.es">SIGUA</a>';
+	var FormatImg = 'image/png';
+	var ZoomMin = 5;
+	var ZoomMax= 21;
+	var capaTiles =  L.tileLayer('https://www.sigua.ua.es/cache/tms/1.0.0/BASE/webmercator_mod/{z}/{x}/{y}.png', {
+			 tms: true,
+			 transparent: true,
+			 maxZoom: ZoomMax,
+			 minZoom: ZoomMin,
+			 unloadInvisibleTiles: true,
+			 attribution: siguaAttrib,
+		});	
+
 
     /*
     http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&service=WMS&request=GetMap&crs=epsg:25830&sld_version=1.1.0&layer=PB_D_TEMA&format=image/png&STYLE=default
@@ -310,7 +325,8 @@ function getLeafletMap(miSLD) {
 		maxZoom: 21
     });    
 	
-	// Añadir capa al mapa
+	// Añadir capas al mapa
+	capaTiles.addTo(miMapa);
 	capaWMS.addTo(miMapa);	
 
 }
