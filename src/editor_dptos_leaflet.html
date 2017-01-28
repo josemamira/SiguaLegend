@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Editor de leyenda (SLD) de departamentos/unidades para SIGUA</title>
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+
+    <!-- OL3 
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.18.2/css/ol.css" type="text/css">-->
+
+	<style type="text/css">
+	  .container2 {
+		  margin: 0px 5px;
+		  width: 50%;
+	  }
+	  .legend {
+		opacity: 0.7;
+	  }
+	  .map {
+        height: 400px;
+        width: 800px;
+      }
+	</style>
+    <style>
+		.cm-string {
+			border-radius: 3px;
+			display: inline-block;
+			margin-bottom: 2px;
+			margin-left: 2px;
+			min-height: 13px;
+			min-width: 9px;
+			padding: 2px 4px;
+			position: relative;
+			top: 2px;
+			vertical-align: bottom;
+		}
+		.cm-small {
+			height: 13px;
+		}
+    </style>
+ 	<!-- Leaflet -->
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>   	
+	<!-- OL3 
+	<script src="https://openlayers.org/en/v3.18.2/build/ol.js" type="text/javascript"></script>-->
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script  src="../javascripts/geo2utm.js"></script>
+	<script src="../javascripts/chroma.min.js"></script>
+	<!--<script src="https://raw.githubusercontent.com/gka/chroma.js/master/chroma.js"></script>-->
+
+
+</head>
+<body>
+<!-- cuerpo html -->
+
+<input type="hidden" id="laPlantaSel">
+<input type="hidden" id="laURL">
+<input type="hidden" id="xLon">
+<input type="hidden" id="yLat">
+<input type="hidden" id="bbox">
+<input type="hidden" id="UTMbbox">
+<input type="hidden" id="widthPix">
+<input type="hidden" id="num">
+
+<h3>Editor online de leyenda para SIGUA</h3>
+<pre>Los ficheros SLD se almacenan en tu cuenta de GitHub. Debes de autentificarte</pre>
+User:<input type="text" id="gitUser" placeholder="usuario" > 
+Password:<input type="password"  id="gitPw" placeholder="password">
+<p>Seleccione un edificio y luego una planta. Posteriormente haga clic en la caja de color para cambiarlo, o bien seleccione una paleta predefinida</p>
+
+
+
+ <label>Selecciona un edificio<select id="listEdi"></select> </label>
+ <div id="plantas"></div>
+ 
+
+
+<table>
+	<tr valign="top">
+		<td>   
+			<div id="resultado" style="display: none;">
+				<div id="listado"></div>
+				<div class="container">				
+					<label>&nbsp;<input type="color" id="outLineColor" name="outLineColor" value="#646464"> Color de línea</label><br>
+					<label>&nbsp;<input type="color" id="otrosColor" name="otrosColor" value="#787878"> Otros</label>
+				</div>
+
+				<br>
+				<label> Paletas predefinidas:
+				<select id="palettesList" onchange="setPalette()">   </label>
+				</select>
+				
+				<br>Fichero XML: <input type="text" readonly id="xmlFile" >
+				<button id="uploadPaletteButton" onclick="uploadPalette()">Subir paleta</button>
+				<button onclick="reloadPage()"> Nueva paleta </button>
+				<div id="paleta"></div>
+			</div>
+		</td>
+
+		<td>			
+			<!-- OL3 MAP -->
+			<div id="map" class="map" ></div>
+			<!-- test -->
+			<div id="gitInfo"></div>			
+		</td>
+	</tr>
+</table>
+
+
+
+<script>
+
+var laPlantaSel;
+// paleta de colores
+	var Accent = {name:'Accent',colores: chroma.brewer.Accent};
+	var Dark2 = {name:'Dark2',colores: chroma.brewer.Dark2};
+	var Paired = {name:'Paired',colores: chroma.brewer.Paired};
+	var Pastel1 ={name:'Pastel1',colores:  chroma.brewer.Pastel1};
+	var Pastel2 = {name:'Pastel2',colores: chroma.brewer.Pastel2};
+	var Set1 = {name:'Set1',colores: chroma.brewer.Set1};
+	var Set2 = {name:'Set2',colores: chroma.brewer.Set2};
+	// array con todas las paletas
+	var lasPaletas = [Accent,Dark2,Paired,Pastel1,Pastel2,Set1,Set2];
+	//alert(lasPaletas[1].colores);
+
+
+	
+function colores(num) {
+	var text="";
+	var opciones="";
+	// sólo obtiene las paletas que tienen más número de colores que el que se indica en num
+	for (j = 0; j < lasPaletas.length; j++) {
+		//alert (lasPaletas[j].colores.length);
+		
+		if ( lasPaletas[j].colores.length >= num ) {
+			opciones += '<option value="'+j+'">'+lasPaletas[j].name+'</option>';
+			//alert ("entra " + lasPaletas[j].name);
+			var unaPaleta = lasPaletas[j].colores.slice(0,num);
+			for (i = 0; i < unaPaleta.length; i++) {
+				text += '<span class="cm-string cm-color cm-small" data-color="#'+unaPaleta[i]+'" style="background-color:'+unaPaleta[i]+';color:black;opacity:1">&nbsp;&nbsp;</span>';				
+			}
+			text += ' '+ lasPaletas[j].name+ '<br>';			
+		} else { 
+			document.getElementById('paleta').innerHTML = "<p>Demasiados dptos/unidades</p>";
+		}
+	}		
+	document.getElementById('paleta').innerHTML = text;
+	document.getElementById('palettesList').innerHTML = opciones;  			
+}	
+
+// Arrays de paletas
+	var pal1= ["#a6cee3", "#1f78b4", "#cab2d6", "#33a02c", "#e31a1c", "#fdbf6f", "#ff7f00", "#787878", "#b2df8a", "#D8D8D8","#e41a1c", "#377eb8", "#999999", "#984ea3", "#ff7f00", "#ffff33", "#a65628", "#000000", "#4daf4a", "#F6D8CE"];// Cualitativa
+	
+/*
+* Cambia la paleta predefinida seleccionada en el Select
+*/	
+function setPalette() {
+	
+    var palValue = document.getElementById("palettesList").value;
+    if (palValue=="#") { alert("Seleccione una paleta");} else {
+		selPaleta= String(lasPaletas[Number(palValue)].colores).split(","); 
+		selPaleta = selPaleta.slice(0,Number(document.getElementById("num").value));
+		for (i = 0; i < selPaleta.length; i++) {
+			document.getElementById("bColor"+(i+1)).value = selPaleta[i];
+		}
+	}
+}
+
+
+// Recargar página
+function reloadPage() { location.reload(); }
+
+// Fecha
+var d = new Date().getTime(); //alert(d);
+var laPlantaSel;
+	
+$(function() {
+  // Cuando se carga la página rellena el nombre del fichero
+  	var elFichero = laPlantaSel+"_DPTOS_Gist_SLD_"+d+".xml";
+	document.getElementById('xmlFile').value= elFichero; 
+});
+	
+// listado edificios
+var edificio;
+$( document ).ready(function() {
+  var url = 'https://www.sigua.ua.es/api/pub/edificio/all/items';
+  $.getJSON(url, function(data) {
+	  $.each(data, function( i, value ) { 
+		  $( "#listEdi" ).append( "<option value='"+data[i].id+"'>"+ data[i].id+" "+data[i].nombre+"</option>" ); 
+	});
+  }); 
+});	
+
+// obtener plantas
+$('#listEdi').on('change', function() {
+	$( "#plantas" ).empty();
+	$( "#listado" ).empty();
+	var zzee = this.value;
+	var url='https://www.sigua.ua.es/api/pub/edificio/'+this.value;
+	$.getJSON(url, function(data) {
+		lasPlantas= data[0].plantas;
+		// obtener centro desde bbox para OL3
+		document.getElementById("bbox").value = data[0].bbox;
+		bbox = data[0].bbox.split(","); //"bbox":"-0.517550920598673,38.3848760208565,-0.516517778325208,38.3865106034857"
+		xLon = ((Number(bbox[2])-Number(bbox[0]))/2)+Number(bbox[0]);
+		yLat = ((Number(bbox[3])-Number(bbox[1]))/2)+Number(bbox[1]);
+		document.getElementById("xLon").value = xLon;
+		document.getElementById("yLat").value = yLat;
+		// geo2utm
+		var XYmin = geo2utm(Number(bbox[0]),Number(bbox[1]));
+		var XYmax = geo2utm(Number(bbox[2]),Number(bbox[3]));
+		var UTMbbox = XYmin[0]+","+XYmin[1]+","+XYmax[0]+","+XYmax[1];
+		document.getElementById("UTMbbox").value = UTMbbox; //alert(UTMbbox);
+		// widthPix (ancho píxeles)
+		var widthPix = parseInt( ((XYmax[0]-XYmin[0])*1200)/(XYmax[1]-XYmin[1]) ); //alert(widthPix);
+		document.getElementById("widthPix").value = widthPix;
+		
+		
+		res = data[0].plantas.slice(1).split("}")[0].split(",");
+		$.each(res, function( i, value ) { 			
+			$( "#plantas" ).append(" <button id='"+res[i]+"' value='"+res[i]+"' onclick='getDptosList(\""+res[i]+"\",\""+zzee+"\")'>"+res[i]+"</button>" ); 			
+		});
+	}); 	
+  //alert( this.value ); // or $(this).val()
+});	
+
+// Lista departamentos. Evento asociado al botón de planta
+function getDptosList(planta,zzee) {
+	var elFichero = planta+"_DPTOS_Gist_SLD_"+d+".xml";
+	document.getElementById('xmlFile').value= elFichero; 
+	var url = 'https://www.sigua.ua.es/api/pub/hashset/uorg/descval/edificio/'+zzee+'/planta/'+planta; //alert(url);
+	document.getElementById("laURL").value = url;
+	document.getElementById("laPlantaSel").value = planta;
+	laPlantaSel = document.getElementById("laPlantaSel").value;
+	$.getJSON(url, function(data) {
+		$( "#listado" ).empty();
+		$.each(data, function( i, value ) {
+			document.getElementById("num").value = data.length;
+			//alert(data.length);
+			colores(data.length);	
+			if  (data[i].hash == "07.018") {
+				$( '#listado' ).append('<input type="checkbox" id="box'+(i+1)+'" checked="checked"><label>&nbsp;<input type="color" id="bColor'+(i+1)+'" name="bColor'+(i+1)+'" value="#FFFFFF">'+ data[i].val + '</label><br>'); 
+			} else {
+				$( '#listado' ).append('<input type="checkbox" id="box'+(i+1)+'" checked="checked"><label>&nbsp;<input type="color" id="bColor'+(i+1)+'" name="bColor'+(i+1)+'" value="'+ pal1[i] +'">'+ data[i].val + '</label><br>'); 
+			}
+		});
+	});
+	// Muestra el div
+	document.getElementById('resultado').style.display='block';
+   
+}
+
+
+
+
+	
+// Obtiene el token gist de autorización
+function uploadPalette() {	
+	
+	var gitUser = document.getElementById('gitUser').value;
+	var gitPw = document.getElementById('gitPw').value;
+	
+	if (gitUser == '' || gitPw == '') { alert('No es especificado el usuario o la contraseña de GitHub');}
+	else {	
+	
+		$.ajax({ 
+			url: 'https://api.github.com/authorizations',
+			type: 'POST',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader("Authorization", "Basic " + btoa(gitUser+":"+gitPw) ); 
+			},
+			data: '{"scopes":["gist"],"note":"Obtener auth con id '+d+'"}'
+		}).done(function(response) {
+			//console.log(response.token);
+			var miToken = response.token;
+			uploadPaletteGit(miToken)
+			
+		});	
+	
+	}
+	
+}
+	
+/*
+* Sube la paleta seleccionada a GitHub como un GIST
+*/	
+function uploadPaletteGit(miToken) {
+	// Obtener la planta que está  seleccionada
+	laPlantaSel = document.getElementById("laPlantaSel").value;
+		
+	// NOTA: Se sustituyen acentos por caracteres unicode. Ver http://www.rapidtables.com/code/text/unicode-characters.htm
+    var xmlHeader='<?xml version="1.0" encoding="UTF-8"?><StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:se="http://www.opengis.net/se"><NamedLayer><se:Name>'+laPlantaSel+'_D_BASICO</se:Name><UserStyle><se:Name>'+laPlantaSel+'_D_BASICO</se:Name><se:FeatureTypeStyle>  ';
+    var xmlMuros ='<se:Rule><se:Name>muros</se:Name><se:Description><se:Title>muros</se:Title></se:Description><ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"><ogc:PropertyIsEqualTo><ogc:PropertyName>actividad</ogc:PropertyName><ogc:Literal>93</ogc:Literal></ogc:PropertyIsEqualTo></ogc:Filter><se:PolygonSymbolizer><se:Fill><se:SvgParameter name="fill">#000000</se:SvgParameter></se:Fill><se:Stroke><se:SvgParameter name="stroke">#000001</se:SvgParameter><se:SvgParameter name="stroke-width">1</se:SvgParameter><se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter></se:Stroke></se:PolygonSymbolizer></se:Rule>';
+    var xmlOtros ='<se:Rule><se:Name></se:Name><!--Parser Error: syntax error, unexpected ELSE - Expression was: ELSE-->          <se:PolygonSymbolizer>            <se:Fill>              <se:SvgParameter name="fill">#cambiaColorLine</se:SvgParameter>            </se:Fill>            <se:Stroke>              <se:SvgParameter name="stroke">#000001</se:SvgParameter>              <se:SvgParameter name="stroke-width">1</se:SvgParameter>              <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>            </se:Stroke>          </se:PolygonSymbolizer>        </se:Rule>';
+    var xmlPie='</se:FeatureTypeStyle></UserStyle></NamedLayer></StyledLayerDescriptor> ';
+    
+	laURL = document.getElementById("laURL").value;
+	var miXml='';	
+	$.getJSON(laURL, function(data) {
+		$.each(data, function( i, value ) {
+			
+			if (document.getElementById("box"+(i+1)).checked == false) { 
+				miXml += '<!-- dpto no incluido  --> ';
+			} else { 
+				
+				miXml +=  '<se:Rule>'+
+					'  <se:Name>'+ data[i].val +'</se:Name>'+
+					'  <se:Description>'+
+					'    <se:Title>'+ data[i].val +'</se:Title>'+
+					'  </se:Description>'+
+					'  <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">'+
+					'    <ogc:PropertyIsEqualTo>'+
+					'      <ogc:PropertyName>centro</ogc:PropertyName>'+
+					'      <ogc:Literal>'+ String(data[i].hash) +'</ogc:Literal>'+
+					'    </ogc:PropertyIsEqualTo>'+
+					'  </ogc:Filter>'+
+					'  <se:PolygonSymbolizer>'+
+					'    <se:Fill>'+
+					'      <se:SvgParameter name="fill">'+ document.getElementById("bColor"+(i+1)).value +'</se:SvgParameter>'+
+					'    </se:Fill>'+
+					'    <se:Stroke>'+
+					'      <se:SvgParameter name="stroke">#cambiaColorLine</se:SvgParameter>'+
+					'      <se:SvgParameter name="stroke-width">1</se:SvgParameter>'+
+					'      <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter>'+
+					'    </se:Stroke>'+
+					'  </se:PolygonSymbolizer>'+
+					'</se:Rule>';
+			}
+		}); // fin each		
+		
+		// Unir cabecera, cuerpo y pie
+		miXml = xmlHeader + miXml + xmlMuros + xmlOtros + xmlPie;
+		// Sustituir todas las ocurrencias de " por \' que es un caracter de escape. Se utiliza expr. reg.
+		miXml = miXml.replace(/"/g,'\'') ;
+		// acentos y otros caracteres
+		miXml = miXml.replace(/á/g,'\u00E1') ;
+		miXml = miXml.replace(/é/g,'\u00E9') ;
+		miXml = miXml.replace(/í/g,'\u00ED') ;
+		miXml = miXml.replace(/ó/g,'\u00F3') ;
+		miXml = miXml.replace(/ú/g,'\u00FA') ;
+		miXml = miXml.replace(/Á/g,'\u00C1') ;
+		miXml = miXml.replace(/É/g,'\u00C9') ;
+		miXml = miXml.replace(/Í/g,'\u00CD') ;
+		miXml = miXml.replace(/Ó/g,'\u00D3') ;
+		miXml = miXml.replace(/Ú/g,'\u00DA') ;				
+		
+		// Cambiar color outline 
+		miXml = miXml.replace( /#cambiaColorLine/g, $("#outLineColor").val() ) ;
+		// Cambiar color otros 
+		miXml = miXml.replace( /#cambiaColorOtros/g, $("#otrosColor").val() ) ;		
+		
+		//console.log(miXml);
+
+		// subir a github. Create a Gist with token from above	
+		$.ajax({ 
+			url: 'https://api.github.com/gists',
+			type: 'POST',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader("Authorization", "token "+miToken); 
+			},
+			data: '{"description": "SLD creado desde interfaz web","public": true,"files": {"'+	document.getElementById('xmlFile').value+'": {"content": "'+ miXml +'"}}}'
+		}).done(function(response) {
+			//console.log(response);			
+			elFichero = document.getElementById('xmlFile').value;
+			//elFichero = "Gist_SLD_"+laPlantaSel+"_"+d+".xml";
+			//document.getElementById('xmlFile').value= elFichero; 		
+			miSLD =  response.files[elFichero].raw_url;
+			document.getElementById("gitInfo").innerHTML = "Subido satisfactoriamente a Github en <a href='" + response.html_url + "'  target='_blank'>este enlace</a><br>"+
+				"Ver resultado en versión estática <a href='https://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&service=WMS&request=GetMap&crs=epsg:25830&sld_version=1.1.0&layer="+laPlantaSel+"_D_TEMA&format=image/png&STYLE=default&bbox="+ document.getElementById('UTMbbox').value +"&width="+document.getElementById('widthPix').value+"&height=1200&sld=" + miSLD + "'  target='_blank' > aquí </a>";
+			getLeafletMap(miSLD);
+			// Ocultar boton
+			document.getElementById('uploadPaletteButton').style.visibility='hidden';
+			console.log("subido con éxito en "+response.html_url);
+		});		
+		
+		
+	});	   // fin getJSON    
+	
+}	//	fin de la función uploadPaletteGit
+	
+/* Aplica el SLD a un mapa SIGUA de Leaflet */
+function getLeafletMap(miSLD) {
+
+	// Defino un mapa
+	//var miMapa = L.map('map').setView([38.385421, -0.514494], 19);
+	var miMapa = L.map('map').setView([ Number(document.getElementById("yLat").value), Number(document.getElementById("xLon").value)  ], 19);
+	
+	
+	// Defino capa de tiles SIGUA base
+	var siguaAttrib='Datos mapa &copy; <a href="http://www.sigua.ua.es">SIGUA</a>';
+	var FormatImg = 'image/png';
+	var ZoomMin = 5;
+	var ZoomMax= 21;
+	var capaTiles =  L.tileLayer('https://www.sigua.ua.es/cache/tms/1.0.0/BASE/webmercator_mod/{z}/{x}/{y}.png', {
+			 tms: true,
+			 transparent: true,
+			 maxZoom: ZoomMax,
+			 minZoom: ZoomMin,
+			 unloadInvisibleTiles: true,
+			 attribution: siguaAttrib,
+		});	
+    // Defino capa WMS
+    var miLayer = laPlantaSel+'_D_TEMA';
+    var url = 'http://www.sigua.ua.es/cgi-bin/siguawms2?version=1.3.0&sld_version=1.1.0&layer='+miLayer+'&sld='+miSLD+'&'
+    var capaWMS = L.tileLayer.wms( url, {
+		format: 'image/png',
+		transparent: true,
+		attribution: 'José Manuel Mira',
+		minZoom:1, 
+		maxZoom: 21
+    });    
+	
+	// Añadir capas al mapa
+	capaTiles.addTo(miMapa);
+	capaWMS.addTo(miMapa);	
+
+}	
+
+
+</script>
+
+</body>
+</html>
