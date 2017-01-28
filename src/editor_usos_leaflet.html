@@ -101,7 +101,7 @@ var laPlantaSel = document.querySelector('input[name="laPlanta"]:checked').value
 
 function checkPlanta(laPlanta) {
 	var d = new Date().getTime();
-	var elFichero = laPlanta+"_Gist_SLD_"+d+".xml"; 
+	var elFichero = laPlanta+"_USOS_Gist_SLD_"+d+".xml"; 
     document.getElementById("xmlFile").value=elFichero;
     //alert(elFichero);
 }
@@ -114,7 +114,7 @@ function reloadPage() { location.reload(); }
 
 $(function() {
   // Cuando se carga la página rellena el nombre del fichero
-  	var elFichero = laPlantaSel+"_Gist_SLD_"+d+".xml";
+  	var elFichero = laPlantaSel+"_USOS_Gist_SLD_"+d+".xml";
 	document.getElementById('xmlFile').value= elFichero; 
 });
 
