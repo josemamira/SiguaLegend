@@ -43,7 +43,7 @@
   <li>No necesita un servidor para ejecutarse. Funciona en el cliente</li>
   <li>El usuario puede personalizar cada categoría con el color deseado. Utiliza el control <i>input color</i> que es un tag HTML5, por lo que se puede utilizar en casi todos los navegadores modernos</li>
   <li>Utiliza paletas de colores adecuadas para leyendas temáticas con datos cualitativos. Basado en los trabajos de la Dra. Cynthia <a href="http://colorbrewer2.org">Brewer</a></li>  
-  <li><a href="http://www.orchids.de/kthilf/javascripts.html">Geo2UTM</a>: Transforma una coordenada en Latitud y longitud con datum WGS84 en UTM del mismo datum. Se utiliza para definir el BBOX en un requerimiento WMS GETMAP</li>
+  <li><a href="http://www.orchids.de/kthilf/javascripts.html" target="_blank">Geo2UTM</a>: Transforma una coordenada en Latitud y longitud con datum WGS84 en UTM del mismo datum. Se utiliza para definir el BBOX en un requerimiento WMS GETMAP</li>
   <li>Los ficheros generados se almacenan como Gist en tu repositorio de Github, por lo que siempre los puedes reutilizar. Son Gist de usuario, no públicos, por lo que es necesario autentificarse con usuario y contraseña.</li> 
   <li>Permite discriminar (no visualizar) algunas categorías (actividades o departamentos)</li>
   <li>En función del número de elementos cualitativos se despliegan las sólo las paletas más adecuadas</li>
@@ -53,11 +53,11 @@
 <p> Para poder realizar este editor se han utilizado los siguientes proyectos </p>
 <ul>
   <li>JQuery</li>
-  <li><a href="https://github.com/gka/chroma.js">Chroma.js</a>: Librería para manipular colores</li>  
-  <li><a href="http://www.orchids.de/kthilf/javascripts.html">Geo2UTM</a>: Transforma una coordenada en Latitud y longitud con datum WGS84 en UTM del mismo datum. Se utiliza para definir el BBOX en un requerimiento WMS GETMAP</li>
-  <li><a href="http://openlayers.org/">OpenLayers 3</a>: Librería de mapas para visualizar on-line la leyenda</li> 
-  <li><a href="http://leafletjs.com/">LeafletJS</a>: Librería de mapas muy ligera para visualizar on-line la leyenda</li> 
-  <li><a href="https://web.ua.es/es/sigua/api-rest.html/">API Rest de Sigua</a>: Utiliza unos pocos métodos para listar edificios y obtener las plantas de cada uno de los edificios seleccionados</li> 
+  <li><a href="https://github.com/gka/chroma.js" target="_blank">Chroma.js</a>: Librería para manipular colores</li>  
+  <li><a href="http://www.orchids.de/kthilf/javascripts.html" target="_blank">Geo2UTM</a>: Transforma una coordenada en Latitud y longitud con datum WGS84 en UTM del mismo datum. Se utiliza para definir el BBOX en un requerimiento WMS GETMAP</li>
+  <li><a href="http://openlayers.org/" target="_blank">OpenLayers 3</a>: Librería de mapas para visualizar on-line la leyenda</li> 
+  <li><a href="http://leafletjs.com/" target="_blank">LeafletJS</a>: Librería de mapas muy ligera para visualizar on-line la leyenda</li> 
+  <li><a href="https://web.ua.es/es/sigua/api-rest.html/" target="_blank">API Rest de Sigua</a>: Utiliza unos pocos métodos para listar edificios y obtener las plantas de cada uno de los edificios seleccionados</li> 
 </ul>
           
 
@@ -66,15 +66,15 @@
   <span aria-hidden="true" class="octicon octicon-link"></span></a>Editor de usos</h3>
 
 <p>Muy sencillo de utilizar. Sólo hay que indicar la paleta o personalizar los colores</p>
-          <p> <input type="button" onclick="location.href='src/editor_usos.html';" value="Acceso al editor de usos" />         </p>
-          <p> <input type="button" onclick="location.href='src/editor_usos_leaflet.html';" value="Acceso al editor de usos (Leaflet)" />         </p>
+          <p> <input type="button" onclick="location.href='src/editor_usos.html';" target="_blank" value="Acceso al editor de usos" />         </p>
+          <p> <input type="button" onclick="location.href='src/editor_usos_leaflet.html';" target="_blank" value="Acceso al editor de usos (Leaflet) RECOMENDADO" />         </p>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true">
   <span aria-hidden="true" class="octicon octicon-link"></span></a>Visor de estilos SLD</h3>
 
 <p>Aplicaci&oacute;n web para visualizar en un mapa los ficheros generados con el editor</p>
-          <p> <input type="button" onclick="location.href='src/sld_loader.html';" value="Acceso a visor de estilos" /></p>
+          <p> <input type="button" onclick="location.href='src/sld_loader.html';" target="_blank" value="Acceso a visor de estilos" /></p>
          
           
 <h3>
@@ -92,25 +92,26 @@
 
 <p>Algunas utilidades de uso de esta librería</p>
 <p>
-  <input type="button" onclick="location.href='src/colores.html';" value="Test de Chroma.js" />
+  <input type="button" onclick="location.href='src/colores.html';" target="_blank" value="Test de Chroma.js" />
 </p>  
           <p><img src="images/editor_dptos.png"></p>
           
         </section>
 
         <aside id="sidebar">
-          <a href="https://github.com/josemamira/SiguaLegend/zipball/master" class="button">
+          <a href="https://github.com/josemamira/SiguaLegend/zipball/master" target="_blank" class="button">
             <small>Download</small>
             .zip file
           </a>
-          <a href="https://github.com/josemamira/SiguaLegend/tarball/master" class="button">
+          <a href="https://github.com/josemamira/SiguaLegend/tarball/master" target="_blank" class="button">
             <small>Download</small>
             .tar.gz file
           </a>
 
-          <p class="repo-owner"><a href="https://github.com/josemamira/SiguaLegend"></a> is maintained by <a href="https://github.com/josemamira">josemamira</a>.</p>
+          <p class="repo-owner"><a href="https://github.com/josemamira/SiguaLegend"></a> is maintained by 
+            <a href="https://github.com/josemamira" target="_blank">josemamira</a>.</p>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+          <p>This page was generated by <a href="https://pages.github.com" target="_blank">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
