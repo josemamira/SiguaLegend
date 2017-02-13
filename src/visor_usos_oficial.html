@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OSM en una ventana</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+	
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+		.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } 
+		.info h4 { margin: 0 0 5px; color: #777; }		
+		.legend {
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}		
+
+	
+	</style>
+</head>
+<body>
+	<div id="map" ></div>
+
+
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+	<script>
+	
+	
+	// Defino un mapa
+	var map = L.map('map').setView([38.385421, -0.514494], 19);
+	
+	// Defino capa de tiles SIGUA base
+	var siguaAttrib='Datos mapa &copy; <a href="http://www.sigua.ua.es">SIGUA</a>';
+	var FormatImg = 'image/png';
+	var ZoomMin = 5;
+	var ZoomMax= 21;
+	var capaTiles =  L.tileLayer('https://www.sigua.ua.es/cache/tms/1.0.0/BASE/webmercator_mod/{z}/{x}/{y}.png', {
+			 tms: true,
+			 transparent: true,
+			 maxZoom: ZoomMax,
+			 minZoom: ZoomMin,
+			 unloadInvisibleTiles: true,
+			 attribution: siguaAttrib,
+		});	
+
+	// Capa WMS Sigua
+    var url = 'http://www.sigua.ua.es/cgi-bin/siguawms2?'
+    var capaWMS = L.tileLayer.wms( url, {
+		format: 'image/png',
+		layers: 'PB_D_TEMA,PB_T_DENO',
+		transparent: true,
+		attribution: 'José Manuel Mira',
+		minZoom:1, 
+		maxZoom: 21
+    });    
+	
+	// Añadir capas al mapa
+	capaTiles.addTo(map);
+	capaWMS.addTo(map);		
+	
+	
+// Leyenda
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML ='<i style="background:#FFFFFF"></i>Accesos<br>'+
+    '<i style="background:#FED9A6"></i>Despachos<br>'+
+    '<i style="background:#B3CDE3"></i>Docencia<br>'+   
+    '<i style="background:#CCEBC5"></i>Laboratorios<br>'+
+    '<i style="background:#FBB4AE"></i>Biblioteca<br>'+   
+    '<i style="background:#FDDAEC"></i>Sala<br>'+   
+    '<i style="background:#FFFFCC"></i>Aseos<br>'+
+    '<i style="background:#F2F2F2"></i>Varios<br>'+   
+    '<i style="background:#787878"></i>Muros<br>'+          
+    '<i style="background:#F2F2F2"></i>Resto<br>';
+    return div;
+};
+
+legend.addTo(map);
+	
+
+
+L.Control.Watermark = L.Control.extend({
+    onAdd: function(map) {
+        var img = L.DomUtil.create('img');
+
+        img.src = './logo.png';
+        img.style.width = '50px';
+
+        return img;
+    },
+
+    onRemove: function(map) {
+        // Nothing to do here
+    }
+});
+
+L.control.watermark = function(opts) {
+    return new L.Control.Watermark(opts);
+}
+
+L.control.watermark({ position: 'bottomleft' }).addTo(map);
+
+
+	
+	
+	
+	
+	</script>
+</body>
+</html>
