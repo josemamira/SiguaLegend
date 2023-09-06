@@ -1,48 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gist Uploader</title>
 </head>
 <body>
     <h1>Gist Uploader</h1>
-    <textarea id="gistContent" rows="10" cols="40"></textarea><br>
-    <input type="text" id="username" placeholder="GitHub Username" ><br>
-    <input type="password" id="password" placeholder="GitHub Password"><br>
-    <button id="uploadButton">Upload Gist</button>
+    <form id="gist-form">
+        <label for="gist-content">Enter your text:</label><br>
+        <textarea id="gist-content" rows="5" cols="40"></textarea><br>
+        <button type="submit">Upload to Gist</button>
+    </form>
+    <div id="gist-link"></div>
 
     <script>
-        document.getElementById("uploadButton").addEventListener("click", function () {
-            const content = document.getElementById("gistContent").value;
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            
-            // Create a Gist using the GitHub API
-            fetch("https://api.github.com/gists", {
-                method: "POST",
+        document.getElementById('gist-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const gistContent = document.getElementById('gist-content').value;
+            const accessToken = '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'; // Replace with your own token
+
+            fetch('https://api.github.com/gists', {
+                method: 'POST',
                 headers: {
-                    "Authorization": "Basic " + btoa(username + ":" + password),
-                    "Content-Type": "application/json",
+                    'Authorization': `token ${accessToken}`,
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    description: "Gist created with JavaScript",
+                    description: 'Gist created via HTML form',
                     public: true,
                     files: {
-                        "gist.txt": {
-                            content: content
-                        }
-                    }
-                })
+                        'gist.txt': {
+                            content: gistContent,
+                        },
+                    },
+                }),
             })
             .then(response => response.json())
             .then(data => {
-                if (data.html_url) {
-                    alert("Gist created successfully! View it here: " + data.html_url);
-                } else {
-                    alert("Error creating Gist. Please check your credentials.");
-                }
+                const gistLink = data.html_url;
+                document.getElementById('gist-link').innerHTML = `
+                    <p>Your Gist has been created! <a href="${gistLink}" target="_blank">View Gist</a></p>
+                `;
             })
             .catch(error => {
-                alert("An error occurred: " + error.message);
+                console.error('Error creating Gist:', error);
             });
         });
     </script>
