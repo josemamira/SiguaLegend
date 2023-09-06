@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gist Uploader</title>
+</head>
+<body>
+    <h1>Gist Uploader</h1>
+    <textarea id="gistContent" rows="10" cols="40"></textarea><br>
+    <input type="text" id="username" placeholder="GitHub Username" ><br>
+    <input type="password" id="password" placeholder="GitHub Password"><br>
+    <button id="uploadButton">Upload Gist</button>
+
+    <script>
+        document.getElementById("uploadButton").addEventListener("click", function () {
+            const content = document.getElementById("gistContent").value;
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            
+            // Create a Gist using the GitHub API
+            fetch("https://api.github.com/gists", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Basic " + btoa(username + ":" + password),
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    description: "Gist created with JavaScript",
+                    public: true,
+                    files: {
+                        "gist.txt": {
+                            content: content
+                        }
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.html_url) {
+                    alert("Gist created successfully! View it here: " + data.html_url);
+                } else {
+                    alert("Error creating Gist. Please check your credentials.");
+                }
+            })
+            .catch(error => {
+                alert("An error occurred: " + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
