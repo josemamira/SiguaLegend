@@ -33,10 +33,11 @@
 <body>
 
 <h3>Editor online de leyenda para SIGUA (Leaflet)</h3>
+Token: <input type="text" id="token" value="">
 <p>Haga clic en la caja de color para cambiarlo, o bien seleccione una paleta predefinida</p>
 
 Planta donde se aplicará:
-  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="Base" checked="checked"> Base
+  <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="Tematico" checked="checked"> Tematico
   <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="PB" > Baja
   <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P1"> P1
   <input type="radio" name="laPlanta" id="laPlanta" onclick="checkPlanta(this.value)" value="P2"> P2 
@@ -97,10 +98,10 @@ Planta donde se aplicará:
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> 
 <script>
 var laPlantaSel = document.querySelector('input[name="laPlanta"]:checked').value;  
-
+var token = document.getElementById("token").value;
 function checkPlanta(laPlanta) {
 	var d = new Date().getTime();
-	var elFichero = laPlanta+"_USOS_BASE_Gist_SLD_"+d+".xml"; 
+	var elFichero = laPlanta+"_USOS_Tematico_Gist_SLD_"+d+".xml"; 
     document.getElementById("xmlFile").value=elFichero;
     //alert(elFichero);
 }
@@ -147,7 +148,7 @@ function subirSLD() {
 	// NOTA: Se sustituyen acentos por caracteres unicode. Ver http://www.rapidtables.com/code/text/unicode-characters.htm
 
 
-var xmlHeader = '<?xml version="1.0" encoding="UTF-8"?> <StyledLayerDescriptor xmlns="http://www.opengis.net/sld" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se"> <NamedLayer> <se:Name>CapaDeConsulta_5</se:Name> <UserStyle> <se:Name>CapaDeConsulta_5</se:Name> <se:FeatureTypeStyle> ';
+var xmlHeader = '<?xml version="1.0" encoding="UTF-8"?> <StyledLayerDescriptor xmlns="http://www.opengis.net/sld" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:ogc="http://www.opengis.net/ogc" xmlns:se="http://www.opengis.net/se"> <NamedLayer> <se:Name>'+laPlantaSel+'</se:Name> <UserStyle> <se:Name>'+laPlantaSel+'</se:Name> <se:FeatureTypeStyle> ';
 var uso1='<se:Rule> <se:Name>Instalaciones deportivas</se:Name> <se:Description> <se:Title>Instalaciones deportivas</se:Title> </se:Description> <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>25</ogc:Literal> </ogc:PropertyIsEqualTo> </ogc:Filter> <se:PolygonSymbolizer> <se:Fill> <se:SvgParameter name="fill">#cambiaColor</se:SvgParameter> </se:Fill> <se:Stroke> <se:SvgParameter name="stroke">#ffff00</se:SvgParameter> <se:SvgParameter name="stroke-width">1</se:SvgParameter> <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter> </se:Stroke> </se:PolygonSymbolizer> </se:Rule> ';
 var uso2='<se:Rule> <se:Name>Edificios</se:Name> <se:Description> <se:Title>Edificios</se:Title> </se:Description> <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"> <ogc:Or> <ogc:Or> <ogc:Or> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>91</ogc:Literal> </ogc:PropertyIsEqualTo> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>92</ogc:Literal> </ogc:PropertyIsEqualTo> </ogc:Or> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>96</ogc:Literal> </ogc:PropertyIsEqualTo> </ogc:Or> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>120</ogc:Literal> </ogc:PropertyIsEqualTo> </ogc:Or> </ogc:Filter> <se:PolygonSymbolizer> <se:Fill> <se:SvgParameter name="fill">#cambiaColor</se:SvgParameter> </se:Fill> <se:Stroke> <se:SvgParameter name="stroke">#cc6666</se:SvgParameter> <se:SvgParameter name="stroke-width">1</se:SvgParameter> <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter> </se:Stroke> </se:PolygonSymbolizer> </se:Rule> ';
 var uso3='<se:Rule> <se:Name>Monumentos</se:Name> <se:Description> <se:Title>Monumentos</se:Title> </se:Description> <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc"> <ogc:PropertyIsEqualTo> <ogc:PropertyName>actividad</ogc:PropertyName> <ogc:Literal>25</ogc:Literal> </ogc:PropertyIsEqualTo> </ogc:Filter> <se:PolygonSymbolizer> <se:Fill> <se:SvgParameter name="fill">#cambiaColor</se:SvgParameter> </se:Fill> <se:Stroke> <se:SvgParameter name="stroke">#ffffff</se:SvgParameter> <se:SvgParameter name="stroke-width">1</se:SvgParameter> <se:SvgParameter name="stroke-linejoin">bevel</se:SvgParameter> </se:Stroke> </se:PolygonSymbolizer> </se:Rule> ';
@@ -263,7 +264,7 @@ var xmlPie = '</se:FeatureTypeStyle> </UserStyle> </NamedLayer> </StyledLayerDes
 	
 	//console.log(miXml);	
 	
-            const accessToken = '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'; // Replace with your GitHub access token Caduca 11/12/2023 https://github.com/settings/tokens
+            const accessToken = token; // Replace with your GitHub access token Caduca 11/12/2023 https://github.com/settings/tokens
             const jsonText = '{"description": "SLD creado desde interfaz web","public": true, "files": {"'+ elFichero +'": {"content": "'+ miXml +'"}}}';
             const gistData = JSON.parse(jsonText);
             console.log(gistData);
@@ -308,12 +309,12 @@ function getLeafletMap(miSLD) {
 	// Defino un mapa
 	var miMapa = L.map('map').setView([38.385421, -0.514494], 19);
 	
-	// Defino capa de tiles SIGUA base
+	// Defino capa de tiles SIGUA Tematico
 	var siguaAttrib='Datos mapa &copy; <a href="http://www.sigua.ua.es">SIGUA</a>';
 	var FormatImg = 'image/png';
 	var ZoomMin = 5;
 	var ZoomMax= 21;
-/*	var capaTiles =  L.tileLayer('https://www.sigua.ua.es/cache/tms/1.0.0/BASE/webmercator_mod/{z}/{x}/{y}.png', {
+/*	var capaTiles =  L.tileLayer('https://www.sigua.ua.es/cache/tms/1.0.0/Tematico/webmercator_mod/{z}/{x}/{y}.png', {
 			 tms: true,
 			 transparent: true,
 			 maxZoom: ZoomMax,
